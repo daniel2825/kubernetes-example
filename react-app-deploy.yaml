@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-app-deploy
+  labels:
+    name: react-app-deploy
+    app: demo-react-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: react-app-pod
+      app: demo-react-app
+  template:
+    metadata:
+      name: react-app-pod
+      labels:
+        name: react-app-pod
+        app: demo-react-app
+    spec:
+      containers:
+      - name: react-app
+        image: ddaniel1128/mederi_react_container:v1
+        ports:
+        - containerPort: 3000
+
