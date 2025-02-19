@@ -7,7 +7,7 @@ metadata:
     name: react-app-deploy
     app: demo-react-app
 spec:
-  replicas: 1
+  replicas: 6
   selector:
     matchLabels:
       name: react-app-pod
@@ -22,6 +22,25 @@ spec:
       containers:
       - name: react-app
         image: ddaniel1128/mederi_react_container:v1
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: 2
+          requests:
+            memory: 256Mi
+            cpu: '0.2'
         ports:
         - containerPort: 3000
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 15
+          timeoutSeconds: 30
 
+  strategy:
+    # RollingUpdate or Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
